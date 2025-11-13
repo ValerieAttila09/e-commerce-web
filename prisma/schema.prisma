@@ -13,3 +13,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id          String    @id @default(cuid())
+  username    String
+  email       String    @unique
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  image       String?
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  reviews     Review[]
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  products    Product[]
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  rating      Int
+  comment     String
+  createdAt   DateTime @default(now())
+  product     Product @relation(fields: [productId], references: [id])
+}
