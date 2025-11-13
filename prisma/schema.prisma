@@ -16,11 +16,18 @@ datasource db {
 
 model User {
   id          String    @id @default(cuid())
-  username    String
   email       String    @unique
   password    String
+  firstName   String?
+  lastName    String?
+  phoneNumber String?
+  address     String?
+  role        String    @default("customer") // customer, admin
+  cart        Cart?
+  orders      Order[]
+  reviews     Review[]
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Product {
@@ -28,10 +35,15 @@ model Product {
   name        String
   description String?
   price       Float
+  stock       Int      @default(0)
   image       String?
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
   reviews     Review[]
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Category {
@@ -45,6 +57,52 @@ model Review {
   productId   Int
   rating      Int
   comment     String
-  createdAt   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
   product     Product @relation(fields: [productId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  total     Float
+  status    String      @default("pending") // pending, shipped, delivered, cancelled
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
 }

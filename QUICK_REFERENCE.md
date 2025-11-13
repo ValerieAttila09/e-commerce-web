@@ -1,413 +1,565 @@
-# 🎯 Landing Page Quick Reference Card
+# ⚡ Quick Reference Guide
 
-**TL;DR - Cheat Sheet untuk Landing Page ShopHub**
+**Fast lookup for common tasks and commands.**
 
 ---
 
-## 🚀 Start Development
+## 🚀 Getting Started
 
 ```bash
-npm run dev                    # Start dev server (localhost:3001)
-npm run build                  # Build for production
-npm start                      # Start production server
-npm run lint                   # Check linting errors
+# 1. Install dependencies
+npm install
+
+# 2. Setup database
+npx prisma generate
+npx prisma migrate deploy
+
+# 3. Start development server
+npm run dev
+
+# 4. Visit http://localhost:3001
 ```
 
 ---
 
-## 📁 File Structure - Where to Edit
+## 📝 Common Commands
 
-| Untuk Ubah | File | Line/Location |
-|-----------|------|----------------|
-| **Logo/Brand Name** | `Navbar.tsx` | ~20 |
-| **Navbar Menu** | `Navbar.tsx` | ~32 |
-| **Login/Signup Links** | `Navbar.tsx` | ~50 |
-| **Hero Headline** | `Hero.tsx` | ~32 |
-| **Hero Description** | `Hero.tsx` | ~40 |
-| **Hero CTA Buttons** | `Hero.tsx` | ~48 |
-| **Hero Stats** | `Hero.tsx` | ~68 |
-| **Features** | `Features.tsx` | ~8 (array) |
-| **Products** | `TrendingProducts.tsx` | ~10 (array) |
-| **Reviews** | `Review.tsx` | ~8 (array) |
-| **Feedbacks** | `Feedbacks.tsx` | ~14 (initial state) |
-| **Footer Links** | `Footer.tsx` | Multiple |
-| **Footer Contact** | `Footer.tsx` | ~120 |
-| **Colors/Styling** | All files | Search `blue-600` |
-| **Metadata** | `app/layout.tsx` | ~8 |
-
----
-
-## 🎨 Quick Color Changes
-
-**Change Brand Color:**
-```
-Search:  from-blue-600 to-blue-800
-Replace: from-[YOUR_COLOR]-600 to-[YOUR_COLOR]-800
-
-Example: from-red-600 to-red-800
-Example: from-purple-600 to-purple-800
-Example: from-green-600 to-green-800
+### Development
+```bash
+npm run dev              # Start dev server (port 3001)
+npm run build            # Build for production
+npm start                # Start production server
+npm run lint             # Run ESLint
 ```
 
-**Available Colors:**
-- `red` `orange` `yellow` `green` `blue` `indigo` `purple` `pink` `cyan` `slate` `gray`
-
----
-
-## ✏️ Edit Content - Copy-Paste Ready
-
-### 1. Change Brand Name
-```jsx
-// In Navbar.tsx (line ~22)
-- ShopHub
-+ YourBrandName
-
-// In Footer.tsx (line ~18)
-- ShopHub
-+ YourBrandName
+### Database
+```bash
+npx prisma generate                    # Generate Prisma Client
+npx prisma migrate dev --name "desc"   # Create migration
+npx prisma migrate deploy               # Apply migrations
+npx prisma db push                     # Push schema to DB
+npx prisma db seed                     # Seed database
+npx prisma studio                      # Open database GUI
+npx prisma migrate reset               # Reset DB (dev only)
 ```
 
-### 2. Update Navbar Menu Items
-```jsx
-// In Navbar.tsx (line ~32-42)
-<Link href="#features">Fitur</Link>      // Change text & href
-<Link href="#products">Produk</Link>
-<Link href="#reviews">Ulasan</Link>
-<Link href="#feedback">Feedback</Link>
-```
+### Testing
+```bash
+# Test signup/login flow manually
+curl -X POST http://localhost:3001/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@test.com","password":"TestPass123","firstName":"John"}'
 
-### 3. Update Hero Section
-```jsx
-// Headline (Hero.tsx line 32)
-<h1>Your Headline Here</h1>
-
-// Description (line 40)
-<p>Your description here</p>
-
-// CTA Button (line 48)
-<Button>Your Button Text</Button>
-```
-
-### 4. Update Features
-```jsx
-// In Features.tsx - Edit features array
-const features = [
-  {
-    icon: IconName,
-    title: 'Your Feature Title',
-    description: 'Your feature description...',
-  },
-];
-```
-
-### 5. Update Products
-```jsx
-// In TrendingProducts.tsx - Edit products array
-const products = [
-  {
-    id: 1,
-    name: 'Your Product Name',
-    price: 'Rp X.XXX.000',
-    originalPrice: 'Rp X.XXX.000',
-    rating: 4.9,
-    reviews: 123,
-    image: '📦', // or image URL
-    badge: 'Your Badge',
-    discount: '-XX%',
-  },
-];
-```
-
-### 6. Update Reviews
-```jsx
-// In Review.tsx - Edit reviews array
-const reviews = [
-  {
-    id: 1,
-    author: 'Customer Name',
-    avatar: '👤',
-    rating: 5,
-    title: 'Review Title',
-    content: 'Review content...',
-    date: 'Time ago',
-    verified: true,
-  },
-];
+# Test login
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@test.com","password":"TestPass123"}'
 ```
 
 ---
 
-## 🔗 Navigation Links Map
+## 🔑 Authentication
 
-```
-Navbar Links:
-- #features → Features Section
-- #products → Trending Products Section
-- #reviews → Review Section
-- #feedback → Feedbacks Section
-- /login → Login Page
-- /signup → Signup Page
-
-Footer Links:
-- Kategori → Update in Footer.tsx line ~46
-- Layanan → Update in Footer.tsx line ~66
-- Bantuan → Update in Footer.tsx line ~86
-- Contact → Update in Footer.tsx line ~120
+### Signup
+```typescript
+const { signup } = useAuthStore();
+await signup('email@test.com', 'Password123', 'John', 'Doe');
 ```
 
----
+### Login
+```typescript
+const { login } = useAuthStore();
+await login('email@test.com', 'Password123');
+```
 
-## 📱 Responsive Classes
+### Logout
+```typescript
+const { logout } = useAuthStore();
+await logout();
+```
 
-```css
-/* Tailwind Breakpoints */
-sm: 640px    (mobile landscape)
-md: 768px    (tablet)
-lg: 1024px   (desktop)
-xl: 1280px   (large desktop)
-2xl: 1536px  (extra large)
+### Get Current User
+```typescript
+const { user, isAuthenticated } = useAuthStore();
+```
 
-/* Usage */
-text-3xl md:text-5xl lg:text-6xl
-/* Mobile: 3xl, Tablet: 5xl, Desktop: 6xl */
-
-grid-cols-1 md:grid-cols-2 lg:grid-cols-4
-/* Mobile: 1 col, Tablet: 2 cols, Desktop: 4 cols */
+### Check Auth Status
+```typescript
+useEffect(() => {
+  checkAuth();
+}, []);
 ```
 
 ---
 
-## 🎨 Tailwind Utility Classes
+## 🛒 Cart Management
 
+### Add to Cart
+```typescript
+const { addItem } = useCartStore();
+addItem({ id: 1, name: 'Product', price: 99.99 }, 1);
+```
+
+### Remove from Cart
+```typescript
+const { removeItem } = useCartStore();
+removeItem(productId);
+```
+
+### Update Quantity
+```typescript
+const { updateQuantity } = useCartStore();
+updateQuantity(productId, 3);
+```
+
+### Get Cart Total
+```typescript
+const { getTotal } = useCartStore();
+const total = getTotal();
+```
+
+### Get Item Count
+```typescript
+const { getItemCount } = useCartStore();
+const count = getItemCount();
+```
+
+### Clear Cart
+```typescript
+const { clearCart } = useCartStore();
+clearCart();
+```
+
+---
+
+## 📊 Database Operations
+
+### Create User
+```typescript
+const user = await prisma.user.create({
+  data: {
+    email: 'user@example.com',
+    password: 'hashed_password',
+    firstName: 'John'
+  }
+});
+```
+
+### Find User
+```typescript
+const user = await prisma.user.findUnique({
+  where: { email: 'user@example.com' }
+});
+```
+
+### Update User
+```typescript
+const updated = await prisma.user.update({
+  where: { id: 'user-id' },
+  data: { firstName: 'Jane' }
+});
+```
+
+### Get User with Cart
+```typescript
+const user = await prisma.user.findUnique({
+  where: { id: 'user-id' },
+  include: { cart: { include: { items: true } } }
+});
+```
+
+### Delete User (Cascade)
+```typescript
+await prisma.user.delete({
+  where: { id: 'user-id' }
+});
+```
+
+---
+
+## 🔐 Password Hashing
+
+### Hash Password
+```typescript
+import { hashPassword } from '@/lib/auth';
+const hash = await hashPassword('plaintext_password');
+```
+
+### Verify Password
+```typescript
+import { verifyPassword } from '@/lib/auth';
+const isValid = await verifyPassword('plaintext', hash);
+```
+
+---
+
+## 🎟️ JWT Tokens
+
+### Generate Token
+```typescript
+import { generateToken } from '@/lib/auth';
+const token = generateToken('user-id');
+```
+
+### Verify Token
+```typescript
+import { verifyToken } from '@/lib/auth';
+const payload = verifyToken(token);
+```
+
+---
+
+## 🍪 Cookie Management
+
+### Get Auth Cookie
+```typescript
+import { getAuthToken } from '@/lib/auth';
+const token = getAuthToken();
+```
+
+### Set Auth Cookie
+```typescript
+import { setAuthCookie } from '@/lib/auth';
+setAuthCookie(token);
+```
+
+### Clear Auth Cookie
+```typescript
+import { clearAuthCookie } from '@/lib/auth';
+clearAuthCookie();
+```
+
+---
+
+## 🌐 API Endpoints
+
+### POST /api/auth/signup
+```bash
+curl -X POST http://localhost:3001/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@test.com","password":"Pass123","firstName":"John"}'
+```
+
+### POST /api/auth/login
+```bash
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@test.com","password":"Pass123"}'
+```
+
+### GET /api/auth/me
+```bash
+curl -X GET http://localhost:3001/api/auth/me \
+  -b cookies.txt
+```
+
+### POST /api/auth/logout
+```bash
+curl -X POST http://localhost:3001/api/auth/logout \
+  -b cookies.txt
+```
+
+---
+
+## 🗂️ File Locations
+
+### Key Files
+```
+Auth Store:         lib/store/authStore.ts
+Cart Store:         lib/store/cartStore.ts
+Auth Utils:         lib/auth.ts
+Prisma Client:      lib/prisma.ts
+DB Schema:          prisma/schema.prisma
+```
+
+### API Routes
+```
+Signup:             app/api/auth/signup/route.ts
+Login:              app/api/auth/login/route.ts
+Logout:             app/api/auth/logout/route.ts
+Get User:           app/api/auth/me/route.ts
+```
+
+### Pages
+```
+Home:               app/page.tsx
+Login:              app/login/page.tsx
+Signup:             app/signup/page.tsx
+Products:           app/products/page.tsx
+Cart:               app/cart/page.tsx
+Profile:            app/profile/page.tsx
+About:              app/about/page.tsx
+```
+
+### Components
+```
+Navbar:             components/sections/Navbar.tsx
+Hero:               components/sections/Hero.tsx
+Features:           components/sections/Features.tsx
+Footer:             components/sections/Footer.tsx
+```
+
+---
+
+## 🔧 Environment Variables
+
+```bash
+# Database
+DATABASE_URL=postgresql://user:password@host:port/dbname
+
+# JWT Secret (must be long & random)
+JWT_SECRET=your_super_secret_key_min_32_characters
+
+# Node Environment
+NODE_ENV=development
+```
+
+---
+
+## 🧪 Test Data
+
+### Test User
+```
+Email: test@example.com
+Password: TestPassword123
+First Name: Test
+Last Name: User
+```
+
+### Test Promo Code
+```
+Code: SAVE10
+Discount: 10%
+```
+
+### Sample Products
+```
+1. Wireless Headphones - $199.99
+2. USB-C Cable - $24.99
+3. Phone Case - $49.99
+4. Screen Protector - $9.99
+5. Charging Pad - $79.99
+6. Portable Battery - $59.99
+7. Laptop Stand - $89.99
+8. Desk Lamp - $39.99
+```
+
+---
+
+## 🎨 Tailwind Classes Reference
+
+### Common Utilities
 ```css
 /* Spacing */
-p-4  (padding)      m-4  (margin)      space-y-4 (vertical gap)
-pt-8 (padding-top)  mx-4 (margin horizontal)
+p-4, m-4, gap-4
 
-/* Text */
-text-xl          (font size)
-font-bold        (font weight)
-text-gray-600    (color)
-text-center      (alignment)
+/* Colors */
+bg-blue-600, text-white, border-gray-200
 
-/* Backgrounds */
-bg-white         (background)
-bg-gray-50       (light background)
-from-blue-600    (gradient start)
-to-blue-800      (gradient end)
-
-/* Borders */
-border-2         (border width)
-border-gray-300  (border color)
-rounded-lg       (border radius)
+/* Sizing */
+w-full, h-screen, max-w-md
 
 /* Display */
-flex   (display flex)
-grid   (display grid)
-hidden (hidden)
-absolute (positioning)
+flex, grid, hidden, block
 
-/* Hover Effects */
-hover:bg-gray-100      (hover background)
-hover:text-blue-600    (hover text color)
-hover:shadow-lg        (hover shadow)
+/* Positioning */
+absolute, relative, sticky
+
+/* Responsive */
+sm:block, md:flex, lg:grid
 ```
 
 ---
 
-## 🔧 Common Component Props
+## 📦 NPM Packages
 
-### Button Component
-```jsx
-<Button>Default</Button>
-<Button variant="outline">Outline</Button>
-<Button size="lg">Large</Button>
-<Button className="custom-class">Custom</Button>
-<Button disabled>Disabled</Button>
+### Auth & Security
+```bash
+npm install bcryptjs jsonwebtoken js-cookie
+npm install --save-dev @types/jsonwebtoken @types/bcryptjs
 ```
 
-### Card Component
-```jsx
-<Card className="p-6 border border-gray-200">
-  Card content here
-</Card>
+### State Management
+```bash
+npm install zustand
 ```
 
-### Using Icons
-```jsx
-import { IconName } from 'lucide-react';
+### UI Framework
+```bash
+npm install @radix-ui/react-... lucide-react
+```
 
-<IconName size={24} className="text-blue-600" />
+### Database
+```bash
+npm install @prisma/client
+npm install -D prisma
 ```
 
 ---
 
 ## 🐛 Debug Tips
 
-```javascript
-// Check browser console (F12)
-// Look for:
-// - Red errors
-// - Yellow warnings
-// - Network tab for API calls
-
-// Check DevTools
-// Elements tab - Inspect styling
-// Console tab - Check errors
-// Network tab - Check resource loading
-
-// Test responsive
-// F12 → Toggle device toolbar (Ctrl+Shift+M)
-// Test at: 375px, 768px, 1024px, 1440px
-```
-
----
-
-## 📦 Dependencies Reference
-
-```json
-{
-  "next": "15.5.6",
-  "react": "18.3.1",
-  "tailwindcss": "3.4.1",
-  "lucide-react": "0.475.0",
-  "@radix-ui/react-*": "Latest"
+### Enable Prisma Query Logging
+```prisma
+// In prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  log      = ["query", "error", "warn"]
 }
 ```
 
-**Add new package:**
-```bash
-npm install package-name
+### Check Browser Cookies
+```javascript
+// In browser console
+console.log(document.cookie);
+```
+
+### Check LocalStorage
+```javascript
+// In browser console
+console.log(localStorage.getItem('auth-storage'));
+console.log(localStorage.getItem('cart-storage'));
+```
+
+### Check Zustand Store
+```javascript
+// In browser console (if store is exported)
+import { useAuthStore } from '@/lib/store/authStore';
+console.log(useAuthStore.getState());
 ```
 
 ---
 
-## 🚀 Deployment Commands
+## ⚠️ Common Issues & Fixes
 
+### Port 3000 Already in Use
 ```bash
-# Vercel (recommended)
-npm install -g vercel
-vercel
+# Next.js auto-uses port 3001
+# Or kill process on port 3000
+lsof -ti:3000 | xargs kill -9
+```
 
-# Build check
+### Prisma Client Not Found
+```bash
+npx prisma generate
 npm run build
-npm start
+```
 
-# Production mode
-NODE_ENV=production npm run build
-NODE_ENV=production npm start
+### Auth Not Persisting
+```bash
+# Clear cookies & localStorage
+localStorage.clear()
+# Clear cookies in DevTools
+```
 
-# Docker
-docker build -t shophub:latest .
-docker run -p 3000:3000 shophub:latest
+### Database Connection Failed
+```bash
+# Check DATABASE_URL in .env
+echo $DATABASE_URL
+# Test connection
+npx prisma db push
+```
+
+### Build Error: "did not initialize yet"
+```bash
+npx prisma generate
+npm run build
 ```
 
 ---
 
-## 📊 Section IDs Map
+## 📱 Responsive Breakpoints
 
 ```
-Navbar navigates to:
-#features  → id="features" (Features Section)
-#products  → id="products" (TrendingProducts Section)
-#reviews   → id="reviews" (Review Section)
-#feedback  → id="feedback" (Feedbacks Section)
+Mobile:        < 640px (sm)
+Tablet:        640px - 1024px (md, lg)
+Desktop:       > 1024px (xl, 2xl)
 ```
 
 ---
 
-## ✅ Pre-Launch Checklist
+## 🔒 Security Checklist
 
-```
-Content:
-- [ ] Brand name updated everywhere
-- [ ] Product data updated
-- [ ] Contact info updated
-- [ ] All typos fixed
-
-Functionality:
-- [ ] All links working
-- [ ] Forms working
-- [ ] Buttons clickable
-- [ ] Mobile menu works
-
-Testing:
-- [ ] Desktop view
-- [ ] Mobile view (375px)
-- [ ] Tablet view (768px)
-- [ ] All browsers
-- [ ] Console clear (no errors)
-
-Performance:
-- [ ] npm run build succeeds
-- [ ] No warnings
-- [ ] Page loads fast
-- [ ] Images optimized
-```
+- [ ] JWT_SECRET changed to secure value
+- [ ] DATABASE_URL uses HTTPS
+- [ ] API routes validate input
+- [ ] Passwords hashed with bcryptjs
+- [ ] HTTP-only cookies enabled
+- [ ] CORS properly configured
+- [ ] No secrets in git repository
+- [ ] Environment variables secured
 
 ---
 
-## 🎨 Color Palette Reference
+## 📚 Documentation Links
 
-```css
-Blue:    blue-50 → blue-950
-Red:     red-50 → red-950
-Green:   green-50 → green-950
-Purple:  purple-50 → purple-950
-Pink:    pink-50 → pink-950
-Orange:  orange-50 → orange-950
-
-Gray:    gray-50 → gray-950
-Neutral: neutral-50 → neutral-950
-Slate:   slate-50 → slate-950
-
-Using:
-bg-blue-100      (light blue)
-bg-blue-600      (medium blue)
-bg-blue-900      (dark blue)
-```
+| Guide | Purpose |
+|-------|---------|
+| [AUTH_SYSTEM_GUIDE.md](./AUTH_SYSTEM_GUIDE.md) | Complete auth documentation |
+| [API_REFERENCE.md](./API_REFERENCE.md) | API endpoint details |
+| [TESTING_GUIDE.md](./TESTING_GUIDE.md) | Testing procedures |
+| [DATABASE_GUIDE.md](./DATABASE_GUIDE.md) | Database operations |
+| [README_COMPLETE.md](./README_COMPLETE.md) | Project overview |
 
 ---
 
-## 📞 Quick Help
+## 🚀 Deployment Checklist
 
-**Issue:** Styling not applied
-- Clear cache: `rm -rf .next`
-- Restart: `npm run dev`
-
-**Issue:** Build fails
-- Check console for errors
-- Run: `npm install` to update deps
-- Check: `npm run lint` for syntax errors
-
-**Issue:** Mobile looks wrong
-- Check responsive classes
-- Use DevTools device emulator
-- Test width: 375px, 768px, 1024px
-
-**Issue:** Slow performance
-- Optimize images
-- Check for large bundles
-- Run: `npm run build` to check size
+- [ ] Build succeeds: `npm run build`
+- [ ] All tests pass
+- [ ] Environment variables configured
+- [ ] Database migrations applied: `npx prisma migrate deploy`
+- [ ] JWT_SECRET is secure
+- [ ] Error logging setup
+- [ ] HTTPS enabled
+- [ ] Backups configured
 
 ---
 
-## 🎯 Section Component Map
+## 💡 Pro Tips
 
-```
-app/page.tsx (Main Page)
-├── Navbar
-├── Hero
-├── Features
-├── TrendingProducts (NEW)
-├── Review
-├── Feedbacks
-└── Footer
-```
+1. **Use Prisma Studio to view data**: `npx prisma studio`
+2. **Test APIs with Postman**: Import & save requests
+3. **Enable TypeScript strict mode**: Catch errors early
+4. **Use React DevTools**: Debug component state
+5. **Profile performance**: Use Lighthouse
+6. **Monitor API calls**: Use browser DevTools Network tab
+7. **Keep dependencies updated**: `npm update`
+8. **Use git branches**: One feature per branch
 
 ---
 
-**Print this page & keep handy! 🖨️**
+## 🎓 Learning Resources
 
-*Version 1.0 - Quick Reference Card*
-*For detailed info, see CUSTOMIZATION_GUIDE.md*
+### Official Documentation
+- [Next.js Docs](https://nextjs.org/docs)
+- [Prisma Docs](https://www.prisma.io/docs)
+- [Zustand Docs](https://github.com/pmndrs/zustand)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+
+### Security
+- [OWASP Authentication](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
+- [Password Best Practices](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
+- [JWT Best Practices](https://tools.ietf.org/html/rfc8725)
+
+---
+
+**Version:** 1.0  
+**Last Updated:** November 13, 2024  
+**Status:** ✅ Ready to Use
+
+**Bookmark this page for quick reference!** 🔖
+
+---
+
+## Quick Navigation
+- [Commands](#-common-commands)
+- [Authentication](#-authentication)
+- [Cart](#-cart-management)
+- [API Endpoints](#-api-endpoints)
+- [File Locations](#-file-locations)
+- [Environment Variables](#-environment-variables)
+- [Debugging](#-debug-tips)
+- [Common Issues](#-common-issues--fixes)
+- [Deployment](#-deployment-checklist)
