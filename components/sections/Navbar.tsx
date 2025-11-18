@@ -66,8 +66,8 @@ export default function Navbar() {
               <button className="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition-colors relative">
                 <ShoppingCart size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                    •
                   </span>
                 )}
               </button>
@@ -123,8 +123,8 @@ export default function Navbar() {
               <button className="p-2 text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
                 <ShoppingCart size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                    •
                   </span>
                 )}
               </button>
