@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft, Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
+import Navbar from '@/components/sections/Navbar';
 import { useCartStore } from '@/lib/store/cartStore';
 
 export default function CartPage() {
@@ -27,8 +28,10 @@ export default function CartPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <Navbar />
+
       {/* Header */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 mt-20">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />

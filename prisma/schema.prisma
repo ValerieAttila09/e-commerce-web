@@ -15,53 +15,53 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
+  id          String   @id @default(cuid())
+  email       String   @unique
   password    String
   firstName   String?
   lastName    String?
   phoneNumber String?
   address     String?
-  role        String    @default("customer") // customer, admin
+  role        String   @default("customer") // customer, admin
   cart        Cart?
   orders      Order[]
   reviews     Review[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   description String?
   price       Float
-  stock       Int      @default(0)
+  stock       Int         @default(0)
   image       String?
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category    @relation(fields: [categoryId], references: [id])
   categoryId  Int
   reviews     Review[]
   cartItems   CartItem[]
   orderItems  OrderItem[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
-  name        String
-  products    Product[]
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
 }
 
 model Review {
-  id          Int      @id @default(autoincrement())
-  productId   Int
-  rating      Int
-  comment     String
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  product     Product @relation(fields: [productId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  productId Int
+  rating    Int
+  comment   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cart {
@@ -105,4 +105,19 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
+}
+
+model Coupon {
+  id            Int       @id @default(autoincrement())
+  code          String    @unique
+  description   String?
+  discountType  String // percentage or fixed
+  discountValue Float
+  maxUses       Int       @default(-1) // -1 means unlimited
+  currentUses   Int       @default(0)
+  minOrderValue Float     @default(0)
+  expiryDate    DateTime?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }

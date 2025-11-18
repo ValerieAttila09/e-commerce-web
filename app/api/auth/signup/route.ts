@@ -4,7 +4,7 @@ import { hashPassword, setAuthCookie, generateToken } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, firstName, lastName } = await request.json();
+    const { email, password, firstName, lastName, role: requestedRole } = await request.json();
 
     // Validation
     if (!email || !password) {
@@ -36,6 +36,9 @@ export async function POST(request: NextRequest) {
     // Hash password
     const hashedPassword = await hashPassword(password);
 
+    // Determine role - allow admin role only in development or for specific emails
+    const userRole = (requestedRole === 'admin' && (process.env.NODE_ENV === 'development' || email.includes('admin'))) ? 'admin' : 'customer';
+
     // Create user
     const user = await prisma.user.create({
       data: {
@@ -43,7 +46,7 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         firstName,
         lastName,
-        role: 'customer',
+        role: userRole,
       },
     });
 

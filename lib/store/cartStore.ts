@@ -14,6 +14,7 @@ export interface CartState {
   items: CartItem[];
   isLoading: boolean;
   error: string | null;
+  lastAddedItem: CartItem | null;
 
   // Cart actions
   addItem: (product: any, quantity?: number) => void;
@@ -23,6 +24,7 @@ export interface CartState {
   getTotal: () => number;
   getItemCount: () => number;
   clearError: () => void;
+  isProductInCart: (productId: number) => boolean;
 }
 
 export const useCartStore = create<CartState>()(
@@ -31,10 +33,20 @@ export const useCartStore = create<CartState>()(
       items: [],
       isLoading: false,
       error: null,
+      lastAddedItem: null,
 
       addItem: (product: any, quantity: number = 1) => {
         const { items } = get();
         const existingItem = items.find((item) => item.productId === product.id);
+
+        const newCartItem = {
+          id: `${product.id}-${Date.now()}`,
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: existingItem ? existingItem.quantity + quantity : quantity,
+          image: product.image,
+        };
 
         if (existingItem) {
           set({
@@ -43,20 +55,15 @@ export const useCartStore = create<CartState>()(
                 ? { ...item, quantity: item.quantity + quantity }
                 : item
             ),
+            lastAddedItem: newCartItem,
           });
         } else {
           set({
             items: [
               ...items,
-              {
-                id: `${product.id}-${Date.now()}`,
-                productId: product.id,
-                name: product.name,
-                price: product.price,
-                quantity,
-                image: product.image,
-              },
+              newCartItem,
             ],
+            lastAddedItem: newCartItem,
           });
         }
       },
@@ -94,6 +101,10 @@ export const useCartStore = create<CartState>()(
 
       clearError: () => {
         set({ error: null });
+      },
+
+      isProductInCart: (productId: number) => {
+        return get().items.some((item) => item.productId === productId);
       },
     }),
     {

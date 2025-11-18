@@ -1,163 +1,109 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Search, ShoppingCart, Heart, Star, Filter, Grid3X3, List } from 'lucide-react';
+import Navbar from '@/components/sections/Navbar';
+import ProductModal from '@/components/sections/ProductModal';
 import { useCartStore } from '@/lib/store/cartStore';
 
-// Sample products data
-const SAMPLE_PRODUCTS = [
-  {
-    id: 1,
-    name: 'Premium Wireless Headphones',
-    price: 199.99,
-    originalPrice: 299.99,
-    category: 'Electronics',
-    rating: 4.8,
-    reviews: 234,
-    image: '🎧',
-    inStock: true,
-    description: 'High-quality wireless headphones with noise cancellation',
-  },
-  {
-    id: 2,
-    name: 'Smart Watch Pro',
-    price: 299.99,
-    originalPrice: 399.99,
-    category: 'Wearables',
-    rating: 4.6,
-    reviews: 189,
-    image: '⌚',
-    inStock: true,
-    description: 'Advanced fitness tracking and notifications',
-  },
-  {
-    id: 3,
-    name: 'USB-C Fast Charger',
-    price: 49.99,
-    originalPrice: 79.99,
-    category: 'Accessories',
-    rating: 4.9,
-    reviews: 512,
-    image: '🔌',
-    inStock: true,
-    description: 'Fast charging with multiple ports',
-  },
-  {
-    id: 4,
-    name: 'Wireless Mouse',
-    price: 39.99,
-    originalPrice: 59.99,
-    category: 'Accessories',
-    rating: 4.5,
-    reviews: 156,
-    image: '🖱️',
-    inStock: true,
-    description: 'Ergonomic wireless mouse',
-  },
-  {
-    id: 5,
-    name: 'Portable Speaker',
-    price: 89.99,
-    originalPrice: 129.99,
-    category: 'Electronics',
-    rating: 4.7,
-    reviews: 267,
-    image: '🔊',
-    inStock: true,
-    description: 'Waterproof portable speaker',
-  },
-  {
-    id: 6,
-    name: 'Phone Stand',
-    price: 19.99,
-    originalPrice: 29.99,
-    category: 'Accessories',
-    rating: 4.4,
-    reviews: 89,
-    image: '📱',
-    inStock: true,
-    description: 'Adjustable phone stand',
-  },
-  {
-    id: 7,
-    name: 'Laptop Bag',
-    price: 79.99,
-    originalPrice: 119.99,
-    category: 'Bags',
-    rating: 4.6,
-    reviews: 178,
-    image: '👜',
-    inStock: true,
-    description: 'Professional laptop bag',
-  },
-  {
-    id: 8,
-    name: 'USB Hub',
-    price: 59.99,
-    originalPrice: 89.99,
-    category: 'Accessories',
-    rating: 4.5,
-    reviews: 134,
-    image: '🔀',
-    inStock: false,
-    description: '7-in-1 USB hub',
-  },
-];
-
-const CATEGORIES = ['All', 'Electronics', 'Accessories', 'Wearables', 'Bags'];
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description?: string;
+  image?: string;
+  category: string;
+  rating: number;
+  reviews: number;
+  stock: number;
+  inStock: boolean;
+}
 
 export default function ProductsPage() {
-  const { addItem } = useCartStore();
+  const { addItem, isProductInCart } = useCartStore();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Fetch products from database
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Get unique categories
+  const categories = useMemo(() => {
+    const cats = new Set(products.map((p) => p.category));
+    return ['All', ...Array.from(cats).sort()];
+  }, [products]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let products = SAMPLE_PRODUCTS;
+    let filtered = products;
 
     // Filter by category
     if (selectedCategory !== 'All') {
-      products = products.filter((p) => p.category === selectedCategory);
+      filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
     // Filter by search query
     if (searchQuery) {
-      products = products.filter(
+      filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase())
+          (p.description?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
       );
     }
 
     // Sort
     switch (sortBy) {
       case 'price-low':
-        products = [...products].sort((a, b) => a.price - b.price);
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
         break;
       case 'price-high':
-        products = [...products].sort((a, b) => b.price - a.price);
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
         break;
       case 'rating':
-        products = [...products].sort((a, b) => b.rating - a.rating);
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
         break;
       case 'newest':
-        products = [...products].reverse();
+        filtered = [...filtered].reverse();
         break;
       default:
         break;
     }
 
-    return products;
-  }, [selectedCategory, searchQuery, sortBy]);
+    return filtered;
+  }, [selectedCategory, searchQuery, sortBy, products]);
 
-  const handleAddToCart = (product: any) => {
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const handleAddToCart = (product: Product) => {
     addItem(product);
   };
 
@@ -169,14 +115,12 @@ export default function ProductsPage() {
     );
   };
 
-  const discount = (original: number, current: number) => {
-    return Math.round(((original - current) / original) * 100);
-  };
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <Navbar />
+
       {/* Header */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 mt-20">
         <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Our Products</h1>
@@ -208,7 +152,7 @@ export default function ProductsPage() {
                 Categories
               </h3>
               <div className="space-y-2">
-                {CATEGORIES.map((category) => (
+                {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
@@ -270,7 +214,14 @@ export default function ProductsPage() {
             </div>
 
             {/* Products grid/list */}
-            {filteredProducts.length > 0 ? (
+            {loading ? (
+              <div className="flex items-center justify-center py-16">
+                <div className="text-center">
+                  <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading products...</p>
+                </div>
+              </div>
+            ) : filteredProducts.length > 0 ? (
               <div
                 className={
                   viewMode === 'grid'
@@ -281,10 +232,9 @@ export default function ProductsPage() {
                 {filteredProducts.map((product) => (
                   <Card
                     key={product.id}
-                    className={`group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 ${viewMode === 'list'
-                        ? 'flex gap-4 p-4'
-                        : ''
+                    className={`group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer ${viewMode === 'list' ? 'flex gap-4 p-4' : ''
                       }`}
+                    onClick={() => handleProductClick(product)}
                   >
                     {/* Product image */}
                     <div
@@ -293,14 +243,7 @@ export default function ProductsPage() {
                           : 'w-full h-48 rounded-lg'
                         }`}
                     >
-                      <div className="text-6xl">{product.image}</div>
-
-                      {/* Discount badge */}
-                      {product.originalPrice > product.price && (
-                        <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                          -{discount(product.originalPrice, product.price)}%
-                        </div>
-                      )}
+                      <div className="text-6xl">{product.image || '📦'}</div>
 
                       {/* Stock badge */}
                       {!product.inStock && (
@@ -311,7 +254,10 @@ export default function ProductsPage() {
 
                       {/* Wishlist button */}
                       <button
-                        onClick={() => toggleWishlist(product.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(product.id);
+                        }}
                         className={`absolute top-3 left-3 p-2 rounded-full transition-all ${wishlist.includes(product.id)
                             ? 'bg-red-500 text-white'
                             : 'bg-white text-gray-600 hover:bg-gray-100'
@@ -331,6 +277,13 @@ export default function ProductsPage() {
                         <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">
                           {product.name}
                         </h3>
+
+                        {/* Description */}
+                        {product.description && (
+                          <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                            {product.description}
+                          </p>
+                        )}
 
                         {/* Rating */}
                         <div className="flex items-center gap-2 mb-3">
@@ -353,27 +306,31 @@ export default function ProductsPage() {
                         {/* Price */}
                         <div className="flex items-baseline gap-2 mb-4">
                           <span className="text-xl font-bold text-gray-900">
-                            ${product.price}
+                            ${product.price.toFixed(2)}
                           </span>
-                          {product.originalPrice > product.price && (
-                            <span className="text-sm text-gray-500 line-through">
-                              ${product.originalPrice}
-                            </span>
-                          )}
                         </div>
                       </div>
 
                       {/* Add to cart button */}
                       <Button
-                        onClick={() => handleAddToCart(product)}
-                        disabled={!product.inStock}
-                        className={`w-full h-10 rounded-lg font-semibold transition-all ${product.inStock
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                            : 'bg-gray-200 text-gray-500'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(product);
+                        }}
+                        disabled={!product.inStock || isProductInCart(product.id)}
+                        className={`w-full h-10 rounded-lg font-semibold transition-all ${isProductInCart(product.id)
+                            ? 'bg-gray-200 text-gray-500'
+                            : product.inStock
+                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                              : 'bg-gray-200 text-gray-500'
                           }`}
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
-                        {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+                        {isProductInCart(product.id)
+                          ? 'In Cart'
+                          : product.inStock
+                            ? 'Add to Cart'
+                            : 'Out of Stock'}
                       </Button>
                     </div>
                   </Card>
@@ -396,6 +353,13 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
+
+      {/* Product Modal */}
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </main>
   );
 }
