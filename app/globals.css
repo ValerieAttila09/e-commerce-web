@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "uploadthing/tw/v4";
+@source "../node_modules/@uploadthing/react/dist";
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

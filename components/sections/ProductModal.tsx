@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { X, Star, ShoppingCart, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/lib/store/cartStore';
+import Image from 'next/image';
 
 interface ProductDetail {
   id: number;
@@ -121,7 +122,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           {/* Image Section */}
           <div className="flex items-center justify-center">
             <div className="w-full h-64 md:h-80 bg-gradient-to-br from-gray-100 to-gray-50 rounded-xl flex items-center justify-center text-8xl">
-              {product.image || '📦'}
+              <Image src={`/images/products_image/${product.image}`} width={200} height={200} alt={""} className=''/>
             </div>
           </div>
 

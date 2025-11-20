@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
 import Navbar from '@/components/sections/Navbar';
 import { useCartStore } from '@/lib/store/cartStore';
+import Image from 'next/image';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, getTotal, getItemCount } = useCartStore();
@@ -31,8 +32,8 @@ export default function CartPage() {
       <Navbar />
 
       {/* Header */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 mt-20">
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r pt-26 md:pt-32 pb-12 md:pb-18 from-blue-50 to-indigo-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Continue shopping
@@ -54,7 +55,7 @@ export default function CartPage() {
                   <div key={item.id} className="p-6 flex gap-6">
                     {/* Product image */}
                     <div className="w-24 h-24 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <div className="text-4xl">{item.image || '📦'}</div>
+                      <Image src={`/images/products_image/${item.image}`} alt={`${item.image}`} width={500} height={500} className='w-full h-full object-cover'/>
                     </div>
 
                     {/* Product info */}

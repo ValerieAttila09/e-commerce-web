@@ -75,7 +75,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Sidebar */}
           <div>
-            <Card className="border-0 shadow-sm p-6 text-center">
+            <Card className="border border-neutral-100 shadow-sm p-6 text-center">
               <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <User className="w-10 h-10 text-white" />
               </div>
@@ -88,11 +88,11 @@ export default function ProfilePage() {
 
             {/* Stats */}
             <div className="mt-6 space-y-3">
-              <Card className="border-0 shadow-sm p-4">
+              <Card className="border border-neutral-100 shadow-sm p-4">
                 <p className="text-sm text-gray-600">Total Orders</p>
                 <p className="text-2xl font-bold text-gray-900">0</p>
               </Card>
-              <Card className="border-0 shadow-sm p-4">
+              <Card className="border border-neutral-100 shadow-sm p-4">
                 <p className="text-sm text-gray-600">Total Spent</p>
                 <p className="text-2xl font-bold text-gray-900">$0.00</p>
               </Card>
@@ -110,7 +110,7 @@ export default function ProfilePage() {
             )}
 
             {/* Personal Information */}
-            <Card className="border-0 shadow-sm p-6 mb-6">
+            <Card className="border border-neutral-100 shadow-sm p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Personal Information</h2>
                 {!isEditing && (
@@ -239,7 +239,7 @@ export default function ProfilePage() {
             </Card>
 
             {/* Account Information */}
-            <Card className="border-0 shadow-sm p-6 mb-6">
+            <Card className="border border-neutral-100 shadow-sm p-6 mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-6">Account Information</h2>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -264,7 +264,7 @@ export default function ProfilePage() {
             </Card>
 
             {/* Danger Zone */}
-            <Card className="border-0 shadow-sm p-6 border-l-4 border-l-red-600 bg-red-50">
+            <Card className="border border-red-200 shadow-sm p-6 bg-red-50 relative overflow-hidden">
               <h2 className="text-xl font-bold text-red-900 mb-4">Danger Zone</h2>
               <Button
                 onClick={handleLogout}

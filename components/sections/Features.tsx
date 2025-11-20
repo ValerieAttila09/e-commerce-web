@@ -2,8 +2,16 @@
 
 import { Card } from '@/components/ui/card';
 import { Zap, Shield, Truck, Headphones, CreditCard, TrendingUp } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Features() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
   const features = [
     {
       icon: Zap,
@@ -37,8 +45,64 @@ export default function Features() {
     },
   ];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Stagger animation for cards
+      gsap.fromTo(
+        cardsRef.current,
+        {
+          opacity: 0,
+          y: 40,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            end: 'top 50%',
+            scrub: false,
+            markers: false,
+          },
+        }
+      );
+
+      // Hover animation - lift effect
+      cardsRef.current.forEach((card) => {
+        if (card) {
+          gsap.set(card, { transformOrigin: 'center' });
+
+          card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+              y: -10,
+              duration: 0.3,
+              ease: 'power2.out',
+            });
+          });
+
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              y: 0,
+              duration: 0.3,
+              ease: 'power2.out',
+            });
+          });
+        }
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="features" className="py-20 md:py-32 bg-white">
+    <section
+      ref={sectionRef}
+      id="features"
+      className="py-20 md:py-32 bg-white"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -55,16 +119,20 @@ export default function Features() {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card
+              <div
                 key={index}
-                className="p-8 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group bg-gradient-to-br from-white to-blue-50"
+                ref={(el) => {
+                  if (el) cardsRef.current[index] = el;
+                }}
               >
-                <div className="mb-4 inline-flex p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg group-hover:from-blue-200 group-hover:to-indigo-200 transition-colors">
-                  <Icon className="text-blue-600" size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </Card>
+                <Card className="p-8 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 group bg-gradient-to-br from-white to-blue-50">
+                  <div className="mb-4 inline-flex p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg group-hover:from-blue-200 group-hover:to-indigo-200 transition-colors">
+                    <Icon className="text-blue-600" size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                </Card>
+              </div>
             );
           })}
         </div>
