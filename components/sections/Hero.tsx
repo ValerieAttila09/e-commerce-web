@@ -90,7 +90,7 @@ export default function Hero() {
           scrub: 1,
           markers: false,
         },
-        y: (index: number) => -index * 50,
+        y: (index: number) => -index * 20,
         ease: 'none',
       });
 
@@ -124,9 +124,9 @@ export default function Hero() {
       ></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
-          <div className="space-y-8">
+          <div className="space-y-9">
             {/* Badge */}
             <div
               ref={badgeRef}
@@ -138,7 +138,7 @@ export default function Hero() {
             </div>
 
             {/* Main Heading */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <h1
                 ref={headingRef}
                 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight"
@@ -180,7 +180,7 @@ export default function Hero() {
             </div>
 
             {/* Stats */}
-            <div ref={statsRef} className="flex flex-wrap gap-8 pt-8 border-t border-gray-200" data-parallax>
+            <div ref={statsRef} className="flex flex-wrap gap-8 pt-8" data-parallax>
               <div>
                 <p className="text-3xl font-bold text-gray-900">10K+</p>
                 <p className="text-gray-600">Produk Tersedia</p>
@@ -202,8 +202,8 @@ export default function Hero() {
               <Image
                 src={`/images/hero_image/happy-people-shopping-online.png`}
                 alt="gambar hero"
-                width={600}
-                height={600}
+                width={900}
+                height={900}
                 className="w-full h-full absolute object-cover inset-0 rounded-lg"
               />
 

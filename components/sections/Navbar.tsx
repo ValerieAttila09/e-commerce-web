@@ -31,7 +31,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full bg-white shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-3">
+        <div className="flex justify-between items-center py-[10px]">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <Image src={`/images/web_logo/web_logo.jpg`} alt='' width={40} height={40} className='rounded-lg'/>

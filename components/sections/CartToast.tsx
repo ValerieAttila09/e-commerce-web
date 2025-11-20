@@ -22,18 +22,18 @@ export default function CartToast() {
         (t) => (
           <div
             ref={toastRef}
-            className="flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg shadow-lg border border-green-700"
+            className="flex items-center gap-3 bg-green-100 text-white px-4 py-3 rounded-lg shadow-lg border border-green-400"
           >
-            <CheckCircle className="w-5 h-5 flex-shrink-0" />
-            <div className="flex-1">
-              <p className="font-semibold text-sm">{lastAddedItem.name}</p>
-              <p className="text-xs text-green-100">Ditambahkan ke cart</p>
+            <CheckCircle className="w-5 h-5 flex-shrink-0" color={"#15803d"} />
+            <div className="flex-1 me-10">
+              <p className="font-semibold text-green-700 text-md">{lastAddedItem.name}</p>
+              <p className="text-xs text-green-600">Ditambahkan ke cart</p>
             </div>
-            <ShoppingCart className="w-4 h-4 flex-shrink-0" />
+            <ShoppingCart className="w-4 h-4 flex-shrink-0" color={"#15803d"} />
           </div>
         ),
         {
-          duration: 4000, // 4 detik
+          duration: 3000, // 4 detik
         }
       );
     }
