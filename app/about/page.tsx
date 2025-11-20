@@ -5,58 +5,59 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, CheckCircle2, Users, Award, Heart } from 'lucide-react';
 import Navbar from '@/components/sections/Navbar';
+import Image from 'next/image';
 
 export default function AboutPage() {
   const teamMembers = [
     {
       name: 'John Doe',
-      role: 'CEO & Founder',
+      role: 'CEO & Pendiri',
       image: '👨‍💼',
-      bio: 'Visionary leader with 10+ years in e-commerce',
+      bio: 'Pemimpin visioner dengan pengalaman 10+ tahun di e-commerce',
     },
     {
       name: 'Sarah Smith',
       role: 'CTO',
       image: '👩‍💻',
-      bio: 'Tech expert passionate about innovation',
+      bio: 'Ahli teknologi yang passionate tentang inovasi',
     },
     {
       name: 'Mike Johnson',
-      role: 'Head of Sales',
+      role: 'Kepala Penjualan',
       image: '👨‍💼',
-      bio: 'Customer-focused sales professional',
+      bio: 'Profesional penjualan yang fokus pada pelanggan',
     },
     {
       name: 'Emma Wilson',
-      role: 'Head of Operations',
+      role: 'Kepala Operasional',
       image: '👩‍💼',
-      bio: 'Operations excellence specialist',
+      bio: 'Spesialis keunggulan operasional',
     },
   ];
 
   const values = [
     {
       icon: <Heart className="w-8 h-8 text-red-500" />,
-      title: 'Customer First',
-      description: 'We prioritize customer satisfaction in everything we do',
+      title: 'Pelanggan Pertama',
+      description: 'Kami memprioritaskan kepuasan pelanggan dalam segala hal yang kami lakukan',
     },
     {
       icon: <Award className="w-8 h-8 text-yellow-500" />,
-      title: 'Quality',
-      description: 'High-quality products and services are our standard',
+      title: 'Kualitas',
+      description: 'Produk dan layanan berkualitas tinggi adalah standar kami',
     },
     {
       icon: <Users className="w-8 h-8 text-blue-500" />,
-      title: 'Community',
-      description: 'Building a strong community of loyal customers',
+      title: 'Komunitas',
+      description: 'Membangun komunitas yang kuat dari pelanggan setia',
     },
   ];
 
   const milestones = [
-    { year: '2018', event: 'Company Founded' },
-    { year: '2020', event: '10,000+ Customers' },
-    { year: '2022', event: 'Million Dollar Milestone' },
-    { year: '2024', event: 'Global Expansion' },
+    { year: '2018', event: 'Perusahaan Didirikan' },
+    { year: '2020', event: '10.000+ Pelanggan' },
+    { year: '2022', event: 'Pencapaian Jutaan Dolar' },
+    { year: '2024', event: 'Ekspansi Global' },
   ];
 
   return (
@@ -68,11 +69,11 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
             <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to home
+              Kembali ke beranda
             </Link>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">About ShopHub</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Tentang ShopHub</h1>
             <p className="text-xl text-gray-600">
-              Your trusted destination for premium products and exceptional service since 2018
+              Destinasi terpercaya Anda untuk produk premium dan layanan luar biasa sejak 2018
             </p>
           </div>
         </section>
@@ -81,23 +82,23 @@ export default function AboutPage() {
         <section className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Story</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Kisah Kami</h2>
               <p className="text-gray-600 mb-4">
-                Founded in 2018, ShopHub started with a simple mission: to make quality products
-                accessible to everyone. What began as a small startup has grown into a thriving
-                e-commerce platform trusted by thousands of customers worldwide.
+                Didirikan pada tahun 2018, ShopHub dimulai dengan misi sederhana: membuat produk berkualitas
+                dapat diakses oleh semua orang. Apa yang dimulai sebagai startup kecil telah berkembang menjadi
+                platform e-commerce yang berkembang dan dipercaya oleh ribuan pelanggan di seluruh dunia.
               </p>
               <p className="text-gray-600 mb-4">
-                We believe in the power of quality, customer service, and innovation. Every product
-                we offer is carefully selected to ensure it meets our high standards for excellence.
+                Kami percaya pada kekuatan kualitas, layanan pelanggan, dan inovasi. Setiap produk
+                yang kami tawarkan dipilih dengan hati-hati untuk memastikan memenuhi standar keunggulan kami.
               </p>
               <p className="text-gray-600">
-                Today, we're proud to serve a diverse community of customers who share our values
-                and appreciate our commitment to quality and service.
+                Hari ini, kami bangga melayani komunitas pelanggan yang beragam yang berbagi nilai-nilai kami
+                dan menghargai komitmen kami terhadap kualitas dan layanan.
               </p>
             </div>
-            <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl p-8 flex items-center justify-center h-80">
-              <div className="text-7xl">🏢</div>
+            <div className="bg-gradient-to-br overflow-hidden relative from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center h-80">
+              <Image src={`/images/office_image/office-image.jpg`} alt='gambar office' width={800} height={680} className='w-full h-full object-cover'/>
             </div>
           </div>
         </section>
@@ -106,17 +107,17 @@ export default function AboutPage() {
         <section className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="border-0 shadow-sm p-8 bg-gradient-to-br from-blue-50 to-blue-100">
-              <h3 className="text-2xl font-bold text-blue-900 mb-4">Our Mission</h3>
+              <h3 className="text-2xl font-bold text-blue-900 mb-4">Misi Kami</h3>
               <p className="text-blue-800">
-                To provide customers with high-quality products, exceptional service, and a seamless
-                shopping experience that exceeds expectations and builds lasting relationships.
+                Menyediakan pelanggan dengan produk berkualitas tinggi, layanan luar biasa, dan pengalaman
+                berbelanja yang mulus yang melebihi harapan dan membangun hubungan jangka panjang.
               </p>
             </Card>
             <Card className="border-0 shadow-sm p-8 bg-gradient-to-br from-indigo-50 to-indigo-100">
-              <h3 className="text-2xl font-bold text-indigo-900 mb-4">Our Vision</h3>
+              <h3 className="text-2xl font-bold text-indigo-900 mb-4">Visi Kami</h3>
               <p className="text-indigo-800">
-                To become the world's most customer-centric e-commerce platform, known for innovation,
-                quality, and unwavering commitment to customer satisfaction.
+                Menjadi platform e-commerce yang paling berpusat pada pelanggan di dunia, yang dikenal karena inovasi,
+                kualitas, dan komitmen yang teguh terhadap kepuasan pelanggan.
               </p>
             </Card>
           </div>
@@ -125,7 +126,7 @@ export default function AboutPage() {
         {/* Values */}
         <section className="bg-gradient-to-b from-white to-gray-50 py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Our Core Values</h2>
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Nilai Inti Kami</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {values.map((value, index) => (
                 <Card key={index} className="border-0 shadow-sm p-8 text-center">
@@ -142,13 +143,13 @@ export default function AboutPage() {
 
         {/* Stats */}
         <section className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">By The Numbers</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Berdasarkan Angka</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { number: '50K+', label: 'Happy Customers' },
-              { number: '100K+', label: 'Products Sold' },
-              { number: '98%', label: 'Satisfaction Rate' },
-              { number: '6', label: 'Years Strong' },
+              { number: '50K+', label: 'Pelanggan Puas' },
+              { number: '100K+', label: 'Produk Terjual' },
+              { number: '98%', label: 'Tingkat Kepuasan' },
+              { number: '6', label: 'Tahun Berdiri' },
             ].map((stat, index) => (
               <Card key={index} className="border-0 shadow-sm p-6 text-center">
                 <p className="text-3xl font-bold text-blue-600 mb-2">{stat.number}</p>
@@ -161,7 +162,7 @@ export default function AboutPage() {
         {/* Timeline */}
         <section className="bg-gradient-to-b from-white to-gray-50 py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Our Journey</h2>
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Perjalanan Kami</h2>
             <div className="space-y-6">
               {milestones.map((milestone, index) => (
                 <div key={index} className="flex items-center gap-4">
@@ -172,7 +173,7 @@ export default function AboutPage() {
                     <Card className="border-0 shadow-sm p-6">
                       <h3 className="text-xl font-bold text-gray-900">{milestone.event}</h3>
                       <p className="text-gray-600 mt-2">
-                        A pivotal moment in our company's history
+                        Saat yang pivotal dalam sejarah perusahaan kami
                       </p>
                     </Card>
                   </div>
@@ -184,7 +185,7 @@ export default function AboutPage() {
 
         {/* Team */}
         <section className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Meet Our Team</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Kenal Tim Kami</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {teamMembers.map((member, index) => (
               <Card key={index} className="border-0 shadow-sm p-8 text-center">
@@ -200,15 +201,15 @@ export default function AboutPage() {
         {/* Why Choose Us */}
         <section className="bg-gradient-to-b from-white to-gray-50 py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Why Choose ShopHub?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Mengapa Memilih ShopHub?</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {[
-                'Premium quality products carefully selected',
-                'Fast and reliable shipping worldwide',
-                'Exceptional 24/7 customer support',
-                '30-day money-back guarantee',
-                'Secure payment with SSL encryption',
-                'Regular sales and exclusive offers',
+                'Produk berkualitas premium yang dipilih dengan hati-hati',
+                'Pengiriman cepat dan andal ke seluruh dunia',
+                'Dukungan pelanggan 24/7 yang luar biasa',
+                'Jaminan uang kembali 30 hari',
+                'Pembayaran aman dengan enkripsi SSL',
+                'Penjualan reguler dan penawaran eksklusif',
               ].map((reason, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
@@ -223,19 +224,19 @@ export default function AboutPage() {
         <section className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
           <Card className="border-0 shadow-lg p-12 bg-gradient-to-r from-blue-600 to-indigo-600">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">Ready to Shop?</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">Siap Berbelanja?</h2>
               <p className="text-blue-100 mb-8">
-                Discover thousands of quality products curated just for you
+                Temukan ribuan produk berkualitas yang dikurasi khusus untuk Anda
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/products">
                   <Button className="bg-white text-blue-600 hover:bg-gray-100 px-8 h-12 font-semibold">
-                    Browse Products
+                    Jelajahi Produk
                   </Button>
                 </Link>
                 <Link href="/">
                   <Button variant="outline" className="border-white text-blue-600 hover:bg-white/30 px-8 h-12 font-semibold">
-                    Back to Home
+                    Kembali ke Beranda
                   </Button>
                 </Link>
               </div>
@@ -245,7 +246,7 @@ export default function AboutPage() {
 
         {/* Contact */}
         <section className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Get in Touch</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Hubungi Kami</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="border-0 shadow-sm p-6 text-center">
               <p className="text-3xl mb-3">✉️</p>
@@ -254,12 +255,12 @@ export default function AboutPage() {
             </Card>
             <Card className="border-0 shadow-sm p-6 text-center">
               <p className="text-3xl mb-3">📞</p>
-              <h3 className="font-bold text-gray-900 mb-2">Phone</h3>
+              <h3 className="font-bold text-gray-900 mb-2">Telepon</h3>
               <p className="text-gray-600">+1 (555) 123-4567</p>
             </Card>
             <Card className="border-0 shadow-sm p-6 text-center">
               <p className="text-3xl mb-3">📍</p>
-              <h3 className="font-bold text-gray-900 mb-2">Address</h3>
+              <h3 className="font-bold text-gray-900 mb-2">Alamat</h3>
               <p className="text-gray-600">123 Commerce St, NY 10001</p>
             </Card>
           </div>

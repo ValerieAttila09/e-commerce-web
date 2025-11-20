@@ -32,15 +32,15 @@ export default function CartPage() {
       <Navbar />
 
       {/* Header */}
-      <section className="bg-gradient-to-r pt-26 md:pt-32 pb-12 md:pb-18 from-blue-50 to-indigo-50 border-b border-gray-200">
+      <section className="bg-gradient-to-r py-28 md:pb-18 from-blue-50 to-indigo-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
+          <Link href="/products" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Continue shopping
+            Lanjut belanja
           </Link>
-          <h1 className="text-4xl font-bold text-gray-900">Shopping Cart</h1>
+          <h1 className="text-4xl font-bold text-gray-900">Keranjang Belanja</h1>
           <p className="text-gray-600 mt-2">
-            You have <strong>{getItemCount()}</strong> item{getItemCount() !== 1 ? 's' : ''} in your cart
+            Kamu punya <strong>{getItemCount()}</strong> barang di keranjang
           </p>
         </div>
       </section>
@@ -87,7 +87,7 @@ export default function CartPage() {
                     <div className="flex flex-col items-end">
                       <div className="text-right mb-4">
                         <p className="text-sm text-gray-600 mb-1">
-                          ${item.price.toFixed(2)} each
+                          ${item.price.toFixed(2)} / piece
                         </p>
                         <p className="text-xl font-bold text-gray-900">
                           ${(item.price * item.quantity).toFixed(2)}
@@ -125,7 +125,7 @@ export default function CartPage() {
 
               {promoApplied && (
                 <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center justify-between">
-                  <span className="text-green-700 font-semibold">✓ Promo code applied successfully</span>
+                  <span className="text-green-700 font-semibold">✓ Kode promo sukses digunakan</span>
                   <button
                     onClick={() => {
                       setPromoApplied(false);
@@ -133,7 +133,7 @@ export default function CartPage() {
                     }}
                     className="text-green-600 hover:text-green-700 text-sm font-semibold"
                   >
-                    Remove
+                    Hapus
                   </button>
                 </div>
               )}
@@ -142,7 +142,7 @@ export default function CartPage() {
             {/* Summary */}
             <div>
               <Card className="border-0 shadow-sm p-6 sticky top-24">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Ringkasan Pesanan</h2>
 
                 <div className="space-y-4 mb-6 pb-6 border-b border-gray-200">
                   <div className="flex justify-between">
@@ -169,7 +169,7 @@ export default function CartPage() {
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Tax</span>
+                    <span className="text-gray-600">Pajak</span>
                     <span className="font-semibold text-gray-900">${tax.toFixed(2)}</span>
                   </div>
                 </div>
@@ -180,14 +180,14 @@ export default function CartPage() {
                 </div>
 
                 <Button className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-lg">
-                  Proceed to Checkout
+                  Lanjutkan ke pembayaran
                 </Button>
 
                 <button
                   onClick={() => clearCart()}
                   className="w-full mt-3 py-2 text-red-600 hover:bg-red-50 rounded-lg font-semibold transition-colors"
                 >
-                  Clear Cart
+                  Kosongkan keranjang
                 </button>
 
                 {/* Info boxes */}
@@ -213,11 +213,11 @@ export default function CartPage() {
         ) : (
           <div className="text-center py-16">
             <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-            <p className="text-gray-600 mb-6">Start shopping to add items to your cart</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Keranjang kamu kosong</h2>
+            <p className="text-gray-600 mb-6">Mulai belanja dan tambah ke keranjang kamu</p>
             <Link href="/products">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Continue Shopping
+                Lanjutkan Belanja
               </Button>
             </Link>
           </div>

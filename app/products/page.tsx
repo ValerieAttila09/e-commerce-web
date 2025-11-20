@@ -121,11 +121,11 @@ export default function ProductsPage() {
       <Navbar />
 
       {/* Header */}
-      <section className="bg-gradient-to-r pt-26 md:pt-32 pb-12 md:pb-18 from-blue-50 to-indigo-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="h-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto py-28 px-6 sm:px-8 lg:px-10">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Our Products</h1>
-            <p className="text-gray-600">Discover our amazing collection of products</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Produk Kami</h1>
+            <p className="text-gray-600">Temukan koleksi produk menakjubkan kami</p>
           </div>
 
           {/* Search bar */}
@@ -133,7 +133,7 @@ export default function ProductsPage() {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <Input
               type="text"
-              placeholder="Search products..."
+              placeholder="Cari produk..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-12 bg-white shadow-lg border-0 rounded-lg h-12"
@@ -150,7 +150,7 @@ export default function ProductsPage() {
             <div className="mb-8">
               <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Filter className="w-5 h-5 text-blue-600" />
-                Categories
+                Kategori
               </h3>
               <div className="space-y-2">
                 {categories.map((category) => (
@@ -158,8 +158,8 @@ export default function ProductsPage() {
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${selectedCategory === category
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-600 text-white font-semibold'
+                      : 'text-gray-700 hover:bg-gray-100'
                       }`}
                   >
                     {category}
@@ -170,17 +170,17 @@ export default function ProductsPage() {
 
             {/* Sort */}
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Sort By</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Urutkan Berdasarkan</h3>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
               >
-                <option value="popular">Most Popular</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Highest Rating</option>
-                <option value="newest">Newest First</option>
+                <option value="popular">Paling Populer</option>
+                <option value="price-low">Harga: Rendah ke Tinggi</option>
+                <option value="price-high">Harga: Tinggi ke Rendah</option>
+                <option value="rating">Rating Tertinggi</option>
+                <option value="newest">Terbaru Dulu</option>
               </select>
             </div>
           </div>
@@ -190,14 +190,14 @@ export default function ProductsPage() {
             {/* Results header */}
             <div className="flex items-center justify-between mb-6">
               <p className="text-gray-600">
-                Showing <strong>{filteredProducts.length}</strong> products
+                Menampilkan <strong>{filteredProducts.length}</strong> produk
               </p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-lg transition-colors ${viewMode === 'grid'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                 >
                   <Grid3X3 className="w-5 h-5" />
@@ -205,8 +205,8 @@ export default function ProductsPage() {
                 <button
                   onClick={() => setViewMode('list')}
                   className={`p-2 rounded-lg transition-colors ${viewMode === 'list'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                 >
                   <List className="w-5 h-5" />
@@ -219,7 +219,7 @@ export default function ProductsPage() {
               <div className="flex items-center justify-center py-16">
                 <div className="text-center">
                   <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-gray-600">Loading products...</p>
+                  <p className="text-gray-600">Memuat produk...</p>
                 </div>
               </div>
             ) : filteredProducts.length > 0 ? (
@@ -240,17 +240,17 @@ export default function ProductsPage() {
                     {/* Product image */}
                     <div
                       className={`relative bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden ${viewMode === 'list'
-                          ? 'w-32 h-32 flex-shrink-0 rounded-lg'
-                          : 'w-full h-48 rounded-lg'
+                        ? 'w-32 h-32 flex-shrink-0 rounded-lg'
+                        : 'w-full h-48 rounded-lg'
                         }`}
                     >
                       {/* <div className="text-6xl">{product.image || '📦'}</div> */}
-                      <Image src={`/images/products_image/${product.image}`} width={200} height={200} alt={""} className=''/>
+                      <Image src={`/images/products_image/${product.image}`} width={200} height={200} alt={""} className='' />
 
                       {/* Stock badge */}
                       {!product.inStock && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <span className="text-white font-bold">Out of Stock</span>
+                          <span className="text-white font-bold">Stok Habis</span>
                         </div>
                       )}
 
@@ -261,8 +261,8 @@ export default function ProductsPage() {
                           toggleWishlist(product.id);
                         }}
                         className={`absolute top-3 left-3 p-2 rounded-full transition-all ${wishlist.includes(product.id)
-                            ? 'bg-red-500 text-white'
-                            : 'bg-white text-gray-600 hover:bg-gray-100'
+                          ? 'bg-red-500 text-white'
+                          : 'bg-white text-gray-600 hover:bg-gray-100'
                           }`}
                       >
                         <Heart
@@ -294,8 +294,8 @@ export default function ProductsPage() {
                               <Star
                                 key={i}
                                 className={`w-4 h-4 ${i < Math.floor(product.rating)
-                                    ? 'text-yellow-400 fill-yellow-400'
-                                    : 'text-gray-300'
+                                  ? 'text-yellow-400 fill-yellow-400'
+                                  : 'text-gray-300'
                                   }`}
                               />
                             ))}
@@ -321,18 +321,18 @@ export default function ProductsPage() {
                         }}
                         disabled={!product.inStock || isProductInCart(product.id)}
                         className={`w-full h-10 rounded-lg font-semibold transition-all ${isProductInCart(product.id)
-                            ? 'bg-gray-200 text-gray-500'
-                            : product.inStock
-                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                              : 'bg-gray-200 text-gray-500'
+                          ? 'bg-gray-200 text-gray-500'
+                          : product.inStock
+                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                            : 'bg-gray-200 text-gray-500'
                           }`}
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
                         {isProductInCart(product.id)
-                          ? 'In Cart'
+                          ? 'Sudah di Keranjang'
                           : product.inStock
-                            ? 'Add to Cart'
-                            : 'Out of Stock'}
+                            ? 'Tambah ke Keranjang'
+                            : 'Stok Habis'}
                       </Button>
                     </div>
                   </Card>
@@ -340,7 +340,7 @@ export default function ProductsPage() {
               </div>
             ) : (
               <div className="text-center py-16">
-                <p className="text-xl text-gray-600 mb-4">No products found</p>
+                <p className="text-xl text-gray-600 mb-4">Tidak ada produk yang ditemukan</p>
                 <Button
                   onClick={() => {
                     setSearchQuery('');
@@ -348,7 +348,7 @@ export default function ProductsPage() {
                   }}
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  Clear filters
+                  Hapus Filter
                 </Button>
               </div>
             )}
