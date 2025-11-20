@@ -9,6 +9,7 @@ import { Search, ShoppingCart, Heart, Star, Filter, Grid3X3, List } from 'lucide
 import Navbar from '@/components/sections/Navbar';
 import ProductModal from '@/components/sections/ProductModal';
 import { useCartStore } from '@/lib/store/cartStore';
+import Image from 'next/image';
 
 interface Product {
   id: number;
@@ -243,7 +244,8 @@ export default function ProductsPage() {
                           : 'w-full h-48 rounded-lg'
                         }`}
                     >
-                      <div className="text-6xl">{product.image || '📦'}</div>
+                      {/* <div className="text-6xl">{product.image || '📦'}</div> */}
+                      <Image src={`/images/products_image/${product.image}`} width={200} height={200} alt={""} className=''/>
 
                       {/* Stock badge */}
                       {!product.inStock && (

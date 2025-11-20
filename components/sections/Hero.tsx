@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Hero() {
   return (
@@ -72,12 +73,13 @@ export default function Hero() {
           <div className="relative">
             <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
               {/* Gradient background placeholder */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-300 to-indigo-400 flex items-center justify-center">
+              {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-300 to-indigo-400 flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl mb-4">🛍️</div>
                   <p className="text-white text-lg font-semibold">Shopping Experience</p>
                 </div>
-              </div>
+              </div> */}
+              <Image src={`/images/hero_image/happy-people-shopping-online.png`} alt='gambar hero' width={600} height={600} className='w-full h-full absolute object-cover inset-0 rounded-lg'/>
 
               {/* Floating cards */}
               <div className="absolute top-8 left-8 bg-white rounded-xl p-4 shadow-xl transform hover:scale-105 transition-transform">
