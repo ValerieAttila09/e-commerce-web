@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { X, Star, ShoppingCart, Check } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/lib/store/cartStore';
 import Image from 'next/image';
@@ -34,6 +35,8 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
   const { addItem, isProductInCart } = useCartStore();
 
   const isInCart = product ? isProductInCart(product.id) : false;
+
+
 
   useGSAP(
     () => {
@@ -122,14 +125,15 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           {/* Image Section */}
           <div className="flex items-center justify-center">
             <div className="w-full h-64 md:h-80 bg-gradient-to-br from-gray-100 to-gray-50 rounded-xl flex items-center justify-center text-8xl">
-              <Image src={`/images/products_image/${product.image}`} width={200} height={200} alt={""} className=''/>
+              {/* If product has multiple images (comma separated), show first and small thumbnails below in Details tab */}
+              <Image src={`/images/products_image/${product.image}`} width={300} height={300} alt={product.name || ''} className='object-contain' />
             </div>
           </div>
 
           {/* Details Section */}
           <div className="flex flex-col justify-between">
-            {/* Header */}
             <div>
+              {/* Header */}
               <p className="text-sm text-gray-500 mb-2 uppercase tracking-wide">
                 {product.category}
               </p>
@@ -142,8 +146,8 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     <Star
                       key={i}
                       className={`w-4 h-4 ${i < Math.floor(product.rating)
-                          ? 'text-yellow-400 fill-yellow-400'
-                          : 'text-gray-300'
+                        ? 'text-yellow-400 fill-yellow-400'
+                        : 'text-gray-300'
                         }`}
                     />
                   ))}
@@ -157,9 +161,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
               {product.description && (
                 <div className="mb-6">
                   <h3 className="text-sm font-semibold text-gray-900 mb-2">Description</h3>
-                  <p className="text-gray-600 leading-relaxed text-sm">
-                    {product.description}
-                  </p>
+                  <p className="text-gray-600 leading-relaxed text-sm">{product.description}</p>
                 </div>
               )}
 
@@ -186,10 +188,10 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                 onClick={handleAddToCart}
                 disabled={!product.inStock || isInCart}
                 className={`w-full h-12 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${isInCart
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    : product.inStock
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                      : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : product.inStock
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                   }`}
               >
                 {isInCart ? (
@@ -206,14 +208,11 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                   'Out of Stock'
                 )}
               </Button>
-
-              <Button
-                onClick={onClose}
-                variant="outline"
-                className="w-full h-12 border-2 border-gray-200 text-gray-900 hover:bg-gray-50 rounded-lg font-semibold"
-              >
-                Close
-              </Button>
+              <Link href={`/products/${product.id}`} onClick={onClose} className="w-full">
+                <Button variant="outline" className="w-full h-12 border-2 border-gray-200 text-gray-900 hover:bg-gray-50 rounded-lg font-semibold">
+                  View Details
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
