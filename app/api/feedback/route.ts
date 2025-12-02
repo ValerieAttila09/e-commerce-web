@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { sendInngestEvent } from '@/lib/inngest'
 
 const FeedbackSchema = z.object({
   name: z.string().min(1, 'Nama harus diisi').max(100, 'Nama terlalu panjang'),
@@ -55,6 +56,9 @@ export async function POST(request: Request) {
         category: category || 'Feedback',
       },
     })
+
+    // Fire a background event to Inngest (do not block response)
+    sendInngestEvent('feedback.created', { feedback: created }).catch((e) => console.error('[POST /api/feedback] Inngest error', e))
 
     console.log('[POST /api/feedback] Feedback created with id:', created.id)
     return NextResponse.json(created, { status: 201 })
