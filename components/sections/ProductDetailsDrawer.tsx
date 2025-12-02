@@ -70,7 +70,7 @@ export default function ProductDetailsDrawer({
     if (!drawerRef.current || !overlayRef.current || !contentRef.current) return;
 
     if (isOpen) {
-      // Unlock body scroll
+      // Lock body scroll
       document.body.style.overflow = 'hidden';
 
       // Animate overlay fade in
