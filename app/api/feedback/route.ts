@@ -30,7 +30,9 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    console.log('[POST /api/feedback] Request body:', JSON.stringify(body))
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[POST /api/feedback] Request body:', JSON.stringify(body))
+    }
 
     // Validate with zod
     const validation = FeedbackSchema.safeParse(body)
