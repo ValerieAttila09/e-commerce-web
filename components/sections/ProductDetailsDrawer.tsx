@@ -194,7 +194,7 @@ export default function ProductDetailsDrawer({
 
               {/* Price */}
               <div className="text-3xl font-extrabold text-blue-600 mb-6">
-                ${product.price.toFixed(2)}
+                ${(product.price ?? 0).toFixed(2)}
               </div>
 
               {/* Stock status */}
