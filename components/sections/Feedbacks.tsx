@@ -138,8 +138,6 @@ export default function Feedbacks() {
       );
     }, sectionRef);
 
-    return () => ctx.revert();
-    // cleanup mounted flag
     return () => {
       mounted = false
       ctx.revert()
