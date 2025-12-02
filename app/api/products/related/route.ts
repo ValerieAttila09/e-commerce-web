@@ -9,6 +9,9 @@ export async function GET(request: Request) {
     if (!productId) return NextResponse.json({ error: 'productId is required' }, { status: 400 })
 
     const id = Number(productId)
+    if (Number.isNaN(id)) {
+      return NextResponse.json({ error: 'Invalid productId' }, { status: 400 })
+    }
 
     const product = await prisma.product.findUnique({ where: { id } })
     if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
