@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build && node postbuild.js",
+    "build": "prisma generate && NODE_OPTIONS='--max-old-space-size=4096' next build && node postbuild.js",
     "start": "next start",
     "lint": "eslint",
+    "scan": "npx tsc --noEmit",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "test:e2e": "playwright test",
+    "inngest": "npx inngest-cli@latest dev"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.20.0",
@@ -78,14 +81,17 @@
     "uploadthing": "^7.7.4",
     "vaul": "^1.1.2",
     "zod": "^3.25.76",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "inngest": "^3.45.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
+    "@playwright/test": "^1.44.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "faker-js": "^1.0.0",
     "genkit-cli": "^1.20.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",

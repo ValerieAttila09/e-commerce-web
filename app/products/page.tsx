@@ -54,22 +54,18 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // Get unique categories
   const categories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category));
     return ['All', ...Array.from(cats).sort()];
   }, [products]);
 
-  // Filter and sort products
   const filteredProducts = useMemo(() => {
     let filtered = products;
 
-    // Filter by category
     if (selectedCategory !== 'All') {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
-    // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(
         (p) =>
@@ -78,7 +74,6 @@ export default function ProductsPage() {
       );
     }
 
-    // Sort
     switch (sortBy) {
       case 'price-low':
         filtered = [...filtered].sort((a, b) => a.price - b.price);

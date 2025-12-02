@@ -15,52 +15,63 @@ export default function Feedbacks() {
   const feedbacksRef = useRef<(HTMLDivElement | null)[]>([]);
   const statsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [feedbacks, setFeedbacks] = useState([
-    {
-      id: 1,
-      name: 'Eka Prasetya',
-      email: 'eka@example.com',
-      message: 'Saran: Tambahkan fitur wishlist yang bisa di-share dengan teman. Ide bagus!',
-      category: 'Saran',
-      timestamp: '2 jam yang lalu',
-    },
-    {
-      id: 2,
-      name: 'Maya Santoso',
-      email: 'maya@example.com',
-      message: 'Produk laptop saya sampai dengan cepat dan dalam kondisi sempurna. Sangat puas!',
-      category: 'Pujian',
-      timestamp: '5 jam yang lalu',
-    },
-    {
-      id: 3,
-      name: 'Rudi Hermawan',
-      email: 'rudi@example.com',
-      message: 'Mohon tambahkan metode pembayaran cicilan untuk produk-produk tertentu.',
-      category: 'Saran',
-      timestamp: '1 hari yang lalu',
-    },
-  ]);
+  const [feedbacks, setFeedbacks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [newFeedback, setNewFeedback] = useState({ name: '', email: '', message: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newFeedback.name && newFeedback.email && newFeedback.message) {
-      setFeedbacks([
-        {
-          id: feedbacks.length + 1,
-          ...newFeedback,
-          category: 'Feedback',
-          timestamp: 'Baru saja',
-        },
-        ...feedbacks,
-      ]);
-      setNewFeedback({ name: '', email: '', message: '' });
+
+    if (!newFeedback.name || !newFeedback.email || !newFeedback.message) {
+      alert('Mohon isi semua field yang diperlukan')
+      return
+    }
+
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...newFeedback, category: 'Feedback' }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        const errorMsg = data?.error || `Error: ${res.status}`
+        console.error('[Feedbacks] Submit failed:', errorMsg, data)
+        alert(`Gagal mengirim feedback: ${errorMsg}`)
+        return
+      }
+
+      console.log('[Feedbacks] Feedback berhasil dikirim:', data.id)
+      setFeedbacks((prev) => [data, ...prev])
+      setNewFeedback({ name: '', email: '', message: '' })
+      alert('Feedback berhasil dikirim! Terima kasih.')
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error)
+      console.error('[Feedbacks] Submit error:', msg)
+      alert(`Error: ${msg}`)
     }
   };
 
   useEffect(() => {
+    // fetch feedbacks from API
+    let mounted = true
+      ; (async () => {
+        try {
+          setLoading(true)
+          const res = await fetch('/api/feedback')
+          if (!res.ok) return
+          const data = await res.json()
+          if (mounted) setFeedbacks(data)
+        } catch (error) {
+          console.error('Failed to load feedbacks', error)
+        } finally {
+          if (mounted) setLoading(false)
+        }
+      })()
+
     const ctx = gsap.context(() => {
       // Form entrance from left
       gsap.fromTo(
@@ -127,7 +138,10 @@ export default function Feedbacks() {
       );
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      mounted = false
+      ctx.revert()
+    }
   }, []);
 
   return (
@@ -211,12 +225,16 @@ export default function Feedbacks() {
 
           {/* Feedback List */}
           <div className="lg:col-span-2 space-y-4">
-            {feedbacks.length > 0 ? (
+            {loading ? (
+              <Card className="p-8 text-center border border-gray-200 bg-white">
+                <p className="text-gray-500">Memuat feedback...</p>
+              </Card>
+            ) : feedbacks.length > 0 ? (
               feedbacks.map((feedback, index) => (
                 <div
                   key={feedback.id}
                   ref={(el) => {
-                    if (el) feedbacksRef.current[index] = el;
+                    if (el) feedbacksRef.current[index] = el
                   }}
                 >
                   <Card className="p-6 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 bg-white">
@@ -227,10 +245,10 @@ export default function Feedbacks() {
                       </div>
                       <span
                         className={`text-xs font-bold px-3 py-1 rounded-full ${feedback.category === 'Pujian'
-                            ? 'bg-green-100 text-green-700'
-                            : feedback.category === 'Saran'
-                              ? 'bg-blue-100 text-blue-700'
-                              : 'bg-purple-100 text-purple-700'
+                          ? 'bg-green-100 text-green-700'
+                          : feedback.category === 'Saran'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-purple-100 text-purple-700'
                           }`}
                       >
                         {feedback.category}
@@ -240,7 +258,7 @@ export default function Feedbacks() {
                     <p className="text-gray-700 mb-4">{feedback.message}</p>
 
                     <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                      <span className="text-xs text-gray-500">{feedback.timestamp}</span>
+                      <span className="text-xs text-gray-500">{new Date(feedback.createdAt).toLocaleString()}</span>
                       <button className="text-blue-600 hover:text-blue-700 font-semibold text-sm">
                         👍 Setuju
                       </button>
@@ -270,17 +288,17 @@ export default function Feedbacks() {
               }}
             >
               <Card className={`p-8 text-center bg-white border border-gray-200 hover:shadow-lg transition-shadow bg-gradient-to-br ${stat.color === 'blue'
-                  ? 'from-blue-50 to-blue-100'
-                  : stat.color === 'green'
-                    ? 'from-green-50 to-green-100'
-                    : 'from-purple-50 to-purple-100'
+                ? 'from-blue-50 to-blue-100'
+                : stat.color === 'green'
+                  ? 'from-green-50 to-green-100'
+                  : 'from-purple-50 to-purple-100'
                 }`}>
                 <p
                   className={`text-4xl font-bold mb-2 ${stat.color === 'blue'
-                      ? 'text-blue-600'
-                      : stat.color === 'green'
-                        ? 'text-green-600'
-                        : 'text-purple-600'
+                    ? 'text-blue-600'
+                    : stat.color === 'green'
+                      ? 'text-green-600'
+                      : 'text-purple-600'
                     }`}
                 >
                   {stat.value}
