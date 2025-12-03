@@ -9,15 +9,62 @@ import { ArrowLeft, Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
 import Navbar from '@/components/sections/Navbar';
 import { useCartStore } from '@/lib/store/cartStore';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, getTotal, getItemCount } = useCartStore();
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
 
+  // Checkout form state
+  const [email, setEmail] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const handlePromoCode = () => {
     if (promoCode.toUpperCase() === 'SAVE10') {
       setPromoApplied(true);
+    }
+  };
+
+  const handleCheckout = async () => {
+    if (!email || !email.includes('@')) {
+      toast.error('Masukkan email yang valid untuk menerima konfirmasi.');
+      return;
+    }
+
+    if (!items || items.length === 0) {
+      toast.error('Keranjang kosong.');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const payload = {
+        email,
+        items: items.map((it) => ({ productId: it.productId, quantity: it.quantity })),
+      };
+
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        toast.error(err?.error || 'Checkout gagal. Coba lagi.');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Show non-blocking success message and clear cart
+      toast.success('Pembayaran anda sedang di proses, Silahkan cek Email anda.');
+      clearCart();
+      setIsProcessing(false);
+    } catch (err) {
+      console.error('checkout error', err);
+      toast.error('Terjadi kesalahan saat memproses pembayaran.');
+      setIsProcessing(false);
     }
   };
 
@@ -55,7 +102,7 @@ export default function CartPage() {
                   <div key={item.id} className="p-6 flex gap-6">
                     {/* Product image */}
                     <div className="w-24 h-24 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Image src={`/images/products_image/${item.image}`} alt={`${item.image}`} width={500} height={500} className='w-full h-full object-cover'/>
+                      <Image src={`/images/products_image/${item.image}`} alt={`${item.image}`} width={500} height={500} className='w-full h-full object-cover' />
                     </div>
 
                     {/* Product info */}
@@ -179,9 +226,22 @@ export default function CartPage() {
                   <span className="text-2xl font-bold text-blue-600">${total.toFixed(2)}</span>
                 </div>
 
-                <Button className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-lg">
-                  Lanjutkan ke pembayaran
-                </Button>
+                <div className="space-y-3 mb-4">
+                  <Input
+                    type="email"
+                    placeholder="Masukkan email untuk konfirmasi"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-gray-50 border-gray-200"
+                  />
+                  <Button
+                    onClick={handleCheckout}
+                    disabled={isProcessing}
+                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-lg"
+                  >
+                    {isProcessing ? 'Memproses...' : 'Lanjutkan ke pembayaran'}
+                  </Button>
+                </div>
 
                 <button
                   onClick={() => clearCart()}
