@@ -1,0 +1,102 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - main [ref=e11]:
+    - navigation [ref=e12]:
+      - generic [ref=e14]:
+        - link "ShopHub" [ref=e15] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e16]: ShopHub
+        - generic [ref=e17]:
+          - link "Home" [ref=e18] [cursor=pointer]:
+            - /url: /
+          - link "Products" [ref=e19] [cursor=pointer]:
+            - /url: /products
+          - link "About" [ref=e20] [cursor=pointer]:
+            - /url: /about
+          - link "Reviews" [ref=e21] [cursor=pointer]:
+            - /url: /#reviews
+          - link "Feedback" [ref=e22] [cursor=pointer]:
+            - /url: /#feedback
+        - generic [ref=e23]:
+          - button [ref=e24] [cursor=pointer]:
+            - img [ref=e25]
+          - link "•" [ref=e28] [cursor=pointer]:
+            - /url: /cart
+            - button "•" [ref=e29]:
+              - img [ref=e30]
+              - generic [ref=e34]: •
+          - link "Sign in" [ref=e35] [cursor=pointer]:
+            - /url: /login
+            - button "Sign in" [ref=e36]
+          - link "Sign up" [ref=e37] [cursor=pointer]:
+            - /url: /signup
+            - button "Sign up" [ref=e38]
+    - generic [ref=e40]:
+      - link "Lanjut belanja" [ref=e41] [cursor=pointer]:
+        - /url: /products
+        - img [ref=e42]
+        - text: Lanjut belanja
+      - heading "Keranjang Belanja" [level=1] [ref=e44]
+      - paragraph [ref=e45]:
+        - text: Kamu punya
+        - strong [ref=e46]: "1"
+        - text: barang di keranjang
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e51]:
+          - img "placeholder.jpg" [ref=e53]
+          - generic [ref=e54]:
+            - heading "E2E Product" [level=3] [ref=e55]
+            - paragraph [ref=e56]: "SKU: #1"
+            - generic [ref=e57]:
+              - button [ref=e58] [cursor=pointer]:
+                - img [ref=e59]
+              - generic [ref=e60]: "1"
+              - button [ref=e61] [cursor=pointer]:
+                - img [ref=e62]
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - paragraph [ref=e65]: $9.99 / piece
+              - paragraph [ref=e66]: $9.99
+            - button [ref=e67] [cursor=pointer]:
+              - img [ref=e68]
+        - generic [ref=e71]:
+          - textbox "Enter promo code (try SAVE10)" [ref=e72]
+          - button "Apply" [disabled]
+      - generic [ref=e74]:
+        - heading "Ringkasan Pesanan" [level=2] [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]: Subtotal
+            - generic [ref=e79]: $9.99
+          - generic [ref=e80]:
+            - generic [ref=e81]: Shipping
+            - generic [ref=e82]: $10.00
+          - generic [ref=e83]:
+            - generic [ref=e84]: Pajak
+            - generic [ref=e85]: $1.00
+        - generic [ref=e86]:
+          - generic [ref=e87]: Total
+          - generic [ref=e88]: $20.99
+        - generic [ref=e89]:
+          - textbox "Masukkan email untuk konfirmasi" [ref=e90]: e2e+1764765635136@example.com
+          - button "Memproses..." [disabled]
+        - button "Kosongkan keranjang" [ref=e91] [cursor=pointer]
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - generic [ref=e94]: 🚚
+            - generic [ref=e95]:
+              - paragraph [ref=e96]: Free shipping
+              - paragraph [ref=e97]: on orders over $100
+          - generic [ref=e98]:
+            - generic [ref=e99]: ✓
+            - generic [ref=e100]:
+              - paragraph [ref=e101]: Secure checkout
+              - paragraph [ref=e102]: with SSL encryption
+  - region "Notifications alt+T"
+  - alert [ref=e103]
+```
