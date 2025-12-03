@@ -9,13 +9,21 @@ test('checkout UI shows processing toast', async ({ page }) => {
     );
   });
 
+  // Stub checkout API so the UI flow doesn't depend on real backend/email infra
+  await page.route('/api/checkout', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ order: { id: 'e2e-test', total: 20.99 } }),
+    });
+  });
+
   await page.goto('/cart');
 
   // Fill email and click checkout
-  await page.waitForSelector('input[placeholder="Masukkan email untuk konfirmasi"]', { timeout: 10000 });
-  await page.fill('input[placeholder="Masukkan email untuk konfirmasi"]', `e2e+${Date.now()}@example.com`);
-  await page.click('text=Lanjutkan ke pembayaran');
+  await page.getByPlaceholder('Masukkan email untuk konfirmasi').fill(`e2e+${Date.now()}@example.com`);
+  await page.getByText('Lanjutkan ke pembayaran').click();
 
   // Expect the sonner toast message to appear
-  await expect(page.locator('text=Pembayaran anda sedang di proses, Silahkan cek Email anda.')).toBeVisible({ timeout: 5000 });
+  await expect(page.getByText('Pembayaran anda sedang di proses, Silahkan cek Email anda.')).toBeVisible({ timeout: 5000 });
 });
