@@ -110,6 +110,22 @@ export default function ProductDetailsDrawer({
         ease: 'power2.in',
       });
     }
+
+    // Cleanup: ensure scrolling is restored and cancel any running tweens
+    return () => {
+      try {
+        document.body.style.overflow = 'auto';
+      } catch (e) {
+        // ignore in case document is not available
+      }
+
+      try {
+        if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
+        if (contentRef.current) gsap.killTweensOf(contentRef.current);
+      } catch (e) {
+        // fail silently if GSAP killTweensOf is not available for some reason
+      }
+    };
   }, [isOpen]);
 
   if (!isOpen || !product) return null;
@@ -181,8 +197,8 @@ export default function ProductDetailsDrawer({
                     <Star
                       key={i}
                       className={`w-4 h-4 ${i < Math.floor(product.rating)
-                          ? 'text-yellow-400 fill-yellow-400'
-                          : 'text-gray-300'
+                        ? 'text-yellow-400 fill-yellow-400'
+                        : 'text-gray-300'
                         }`}
                     />
                   ))}
@@ -201,8 +217,8 @@ export default function ProductDetailsDrawer({
               <div className="mb-6">
                 <p
                   className={`text-sm font-semibold ${product.inStock
-                      ? 'text-green-600'
-                      : 'text-red-600'
+                    ? 'text-green-600'
+                    : 'text-red-600'
                     }`}
                 >
                   {product.inStock
@@ -244,8 +260,8 @@ export default function ProductDetailsDrawer({
                             <Star
                               key={i}
                               className={`w-3 h-3 ${i < review.rating
-                                  ? 'text-yellow-400 fill-yellow-400'
-                                  : 'text-gray-300'
+                                ? 'text-yellow-400 fill-yellow-400'
+                                : 'text-gray-300'
                                 }`}
                             />
                           ))}
@@ -320,8 +336,8 @@ export default function ProductDetailsDrawer({
           >
             <Heart
               className={`w-5 h-5 ${isWishlisted
-                  ? 'fill-red-500 text-red-500'
-                  : 'text-gray-600'
+                ? 'fill-red-500 text-red-500'
+                : 'text-gray-600'
                 }`}
             />
             {isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}
